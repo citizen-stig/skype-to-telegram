@@ -10,27 +10,27 @@ class GateWay(object):
         self.telegram_agent = None  # type: TelegramAgent
         self.logger = logging.getLogger('gateway')
 
-    def set_skype_agent(self, skype_agent: SkypeAgent):
+    def set_skype_agent(self, skype_agent: SkypeAgent) -> None:
         self.skype_agent = skype_agent
 
-    def set_telegram_agent(self, telegram_agent: TelegramAgent):
+    def set_telegram_agent(self, telegram_agent: TelegramAgent) -> None:
         self.telegram_agent = telegram_agent
 
-    def send_message_to_skype(self, message):
+    def send_message_to_skype(self, message: str) -> None:
         if self.skype_agent:
             self.logger.debug('Sending message %s to skype subscribers', message)
             self.skype_agent.send_message_to_subscribers(message)
         else:
             self.logger.warning('Skype Agent has not been set yet')
 
-    def send_message_to_telegram(self, message):
+    def send_message_to_telegram(self, message: str) -> None:
         if self.telegram_agent:
             self.logger.debug('Sending message %s to telegram', message)
             self.telegram_agent.send_message_to_group(message)
         else:
             self.logger.warning('Telegram Agent has not been set yet')
 
-    def run(self):
+    def run(self) -> None:
         self.logger.info('Starting gateway...')
         skype_agent_thread = Thread(target=self.skype_agent.loop)
         telegram_agent_thread = Thread(target=self.telegram_agent.run)
